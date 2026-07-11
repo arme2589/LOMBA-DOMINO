@@ -38,6 +38,10 @@ interface OperatorPanelProps {
   validationError: string | null;
   setValidationError: (msg: string | null) => void;
   
+  // Tournament Title props
+  tournamentTitle: string;
+  onUpdateTournamentTitle: (title: string) => void;
+  
   // Group Scoreboard props
   groups: Group[];
   onUpdateGroupName: (id: number, name: string) => void;
@@ -67,6 +71,9 @@ export const OperatorPanel: React.FC<OperatorPanelProps> = ({
   onHidePanel,
   validationError,
   setValidationError,
+  
+  tournamentTitle,
+  onUpdateTournamentTitle,
   
   groups,
   onUpdateGroupName,
@@ -188,6 +195,20 @@ export const OperatorPanel: React.FC<OperatorPanelProps> = ({
               <span className="text-[10px] text-gray-500">Pasang kartu bebas tanpa dicocokkan</span>
             </div>
           </label>
+
+          {/* Tournament Title Option */}
+          <div className="space-y-1.5 pt-1.5 border-t border-[#2a2a2a]">
+            <label className="text-[10px] font-bold text-[#888] uppercase tracking-wider block">Judul Pertandingan</label>
+            <input
+              type="text"
+              value={tournamentTitle}
+              onChange={(e) => onUpdateTournamentTitle(e.target.value)}
+              placeholder="CONTOH: DOMINO CHAMPIONSHIP 2026"
+              className="bg-black border border-[#2d2d2d] focus:border-amber-400 text-white text-[11px] px-2.5 py-1.5 rounded w-full focus:outline-hidden"
+              id="input-tournament-title"
+              maxLength={50}
+            />
+          </div>
         </div>
 
         {/* SECTION 2: PLAYERS MANAGEMENT */}

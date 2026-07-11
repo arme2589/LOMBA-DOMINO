@@ -42,6 +42,7 @@ export default function App() {
   // Layout state
   const [showOperatorPanel, setShowOperatorPanel] = useState<boolean>(true);
   const [showResetConfirm, setShowResetConfirm] = useState<boolean>(false);
+  const [tournamentTitle, setTournamentTitle] = useState<string>('DOMINO CHAMPIONSHIP 2026');
 
   // Load state from LocalStorage on mount
   useEffect(() => {
@@ -52,6 +53,7 @@ export default function App() {
       const storedBypass = localStorage.getItem('domino_bypass');
       const storedHistory = localStorage.getItem('domino_history');
       const storedGroups = localStorage.getItem('domino_groups');
+      const storedTitle = localStorage.getItem('domino_title');
 
       if (storedPlayers) setPlayers(JSON.parse(storedPlayers));
       if (storedChain) setChain(JSON.parse(storedChain));
@@ -59,6 +61,7 @@ export default function App() {
       if (storedBypass) setBypassValidation(JSON.parse(storedBypass));
       if (storedHistory) setHistory(JSON.parse(storedHistory));
       if (storedGroups) setGroups(JSON.parse(storedGroups));
+      if (storedTitle) setTournamentTitle(storedTitle);
     } catch (e) {
       console.error("Gagal memuat data pertandingan dari LocalStorage:", e);
     }
@@ -72,7 +75,8 @@ export default function App() {
     localStorage.setItem('domino_bypass', JSON.stringify(bypassValidation));
     localStorage.setItem('domino_history', JSON.stringify(history));
     localStorage.setItem('domino_groups', JSON.stringify(groups));
-  }, [players, chain, lastPlayedPlayerId, bypassValidation, history, groups]);
+    localStorage.setItem('domino_title', tournamentTitle);
+  }, [players, chain, lastPlayedPlayerId, bypassValidation, history, groups, tournamentTitle]);
 
   // Player name updates
   const handleUpdatePlayerName = (id: number, name: string) => {
@@ -317,6 +321,9 @@ export default function App() {
           validationError={validationError}
           setValidationError={setValidationError}
           
+          tournamentTitle={tournamentTitle}
+          onUpdateTournamentTitle={setTournamentTitle}
+          
           groups={groups}
           onUpdateGroupName={handleUpdateGroupName}
           onUpdateGroupScore={handleUpdateGroupScore}
@@ -336,6 +343,7 @@ export default function App() {
         groups={groups}
         selectedPlayerId={selectedPlayerId}
         selectedSide={selectedSide}
+        tournamentTitle={tournamentTitle}
       />
 
       {/* CUSTOM CONFIRMATION MODAL */}

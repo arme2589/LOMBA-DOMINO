@@ -27,6 +27,7 @@ interface AudienceViewProps {
   groups: Group[];
   selectedPlayerId: number;
   selectedSide?: 'left' | 'right';
+  tournamentTitle: string;
 }
 
 export const AudienceView: React.FC<AudienceViewProps> = ({
@@ -39,6 +40,7 @@ export const AudienceView: React.FC<AudienceViewProps> = ({
   groups,
   selectedPlayerId,
   selectedSide = 'right',
+  tournamentTitle,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -394,8 +396,8 @@ export const AudienceView: React.FC<AudienceViewProps> = ({
       {/* TOP-LEFT HEADER HUD */}
       <div className="absolute top-6 left-6 z-20 flex flex-col gap-2 pointer-events-none max-w-md">
         <div className="flex flex-col items-start">
-          <span className="text-[10px] uppercase tracking-[0.3em] text-[#4ade80] font-bold mb-1 opacity-80 drop-shadow-xs">
-            DOMINO CHAMPIONSHIP 2026
+          <span className="text-[10px] uppercase tracking-[0.3em] text-[#4ade80] font-bold mb-1 opacity-80 drop-shadow-xs break-all" id="lbl-tournament-title">
+            {tournamentTitle || 'DOMINO CHAMPIONSHIP 2026'}
           </span>
           <div className="flex items-center space-x-4 px-4 py-1.5 bg-black/55 backdrop-blur-md rounded-lg border border-white/10 shadow-lg pointer-events-auto">
             <div className="flex items-center space-x-1">
