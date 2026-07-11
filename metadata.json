@@ -1,0 +1,6 @@
+{
+  "name": "Domino Match Preview",
+  "description": "Preview Pertandingan Domino untuk operator dan penonton layar lebar / TV.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
