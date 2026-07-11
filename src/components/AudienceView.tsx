@@ -91,8 +91,9 @@ export const AudienceView: React.FC<AudienceViewProps> = ({
   const leftBranch = chain.filter(t => t.side === 'left');
   const rightBranch = chain.filter(t => t.side === 'right');
 
-  // Calculate 2D coordinates for all tiles dynamically
-  const gap = 4;
+  // Calculate 2D coordinates for all tiles dynamically with compact stacking
+  const overlap = 42; // Overlap of 42px on the 48px half-tile makes it very compact while keeping a beautiful 6px layered edge
+  const gap = 2; // Reduced gap for tightly packed tiles
   const positions: Record<string, { x: number; y: number }> = {};
   
   let minX = -48;
@@ -134,15 +135,15 @@ export const AudienceView: React.FC<AudienceViewProps> = ({
       let y = 0;
 
       if (tile.orientation === 'horizontal') {
-        x = prevOuterX - 72 - gap;
+        x = prevOuterX - 72 + overlap - gap;
         y = prevOuterY;
       } else {
         if (prevTile.orientation === 'horizontal' || prevTile.side === 'center') {
-          x = prevOuterX - 48 - gap;
+          x = prevOuterX - 48 + overlap - gap;
           y = prevOuterY - 24;
         } else {
           x = prevOuterX;
-          y = prevOuterY - 72 - gap;
+          y = prevOuterY - 72 + overlap - gap;
         }
       }
 
@@ -180,15 +181,15 @@ export const AudienceView: React.FC<AudienceViewProps> = ({
       let y = 0;
 
       if (tile.orientation === 'horizontal') {
-        x = prevOuterX + 72 + gap;
+        x = prevOuterX + 72 - overlap + gap;
         y = prevOuterY;
       } else {
         if (prevTile.orientation === 'horizontal' || prevTile.side === 'center') {
-          x = prevOuterX + 48 + gap;
+          x = prevOuterX + 48 - overlap + gap;
           y = prevOuterY + 24;
         } else {
           x = prevOuterX;
-          y = prevOuterY + 72 + gap;
+          y = prevOuterY + 72 - overlap + gap;
         }
       }
 
@@ -578,6 +579,11 @@ export const AudienceView: React.FC<AudienceViewProps> = ({
                     }
                   }
 
+                  // Use the sequence of the card in the chain to determine its z-index.
+                  // Newer cards are placed on top of older cards to make the stack look natural.
+                  const cardIndex = chain.findIndex(t => t.id === tile.id);
+                  const cardZIndex = 10 + (cardIndex !== -1 ? cardIndex : 0);
+
                   return (
                     <div 
                       key={tile.id} 
@@ -587,6 +593,7 @@ export const AudienceView: React.FC<AudienceViewProps> = ({
                         top: `${topOffset}px`,
                         width: isVerticalLayout ? '48px' : '96px',
                         height: isVerticalLayout ? '96px' : '48px',
+                        zIndex: cardZIndex,
                       }}
                     >
                       <div className={`w-full h-full relative flex items-center justify-center ${animationClass}`}>
