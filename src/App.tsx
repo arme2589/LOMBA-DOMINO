@@ -69,13 +69,17 @@ export default function App() {
 
   // Save state to LocalStorage on updates
   useEffect(() => {
-    localStorage.setItem('domino_players', JSON.stringify(players));
-    localStorage.setItem('domino_chain', JSON.stringify(chain));
-    localStorage.setItem('domino_last_player', JSON.stringify(lastPlayedPlayerId));
-    localStorage.setItem('domino_bypass', JSON.stringify(bypassValidation));
-    localStorage.setItem('domino_history', JSON.stringify(history));
-    localStorage.setItem('domino_groups', JSON.stringify(groups));
-    localStorage.setItem('domino_title', tournamentTitle);
+    try {
+      localStorage.setItem('domino_players', JSON.stringify(players));
+      localStorage.setItem('domino_chain', JSON.stringify(chain));
+      localStorage.setItem('domino_last_player', JSON.stringify(lastPlayedPlayerId));
+      localStorage.setItem('domino_bypass', JSON.stringify(bypassValidation));
+      localStorage.setItem('domino_history', JSON.stringify(history));
+      localStorage.setItem('domino_groups', JSON.stringify(groups));
+      localStorage.setItem('domino_title', tournamentTitle);
+    } catch (e) {
+      console.warn("Gagal menyimpan data pertandingan ke LocalStorage:", e);
+    }
   }, [players, chain, lastPlayedPlayerId, bypassValidation, history, groups, tournamentTitle]);
 
   // Player name updates
